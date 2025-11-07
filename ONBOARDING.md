@@ -5,13 +5,12 @@ Thank you for your interest in helping contribute to our work at Autoware Founda
 ## How to Get Started:
 - **Give this Github repo a 'star'** and review the README file to familiarize yourself with the project goals
 
-- Join our Discord, and in the 'privately owned vehicles' channel, please add a brief message to introduce yourself. Here is the link to join our Discord: https://discord.com/invite/Q94UsPvReQ
-  - And this is the link to the [privately owned vehicles discord channel](https://discord.gg/k7MTkwGy)
+- Join our Discord, and in the 'Trucks' channel, please add a brief message to introduce yourself. Here is the link to join our Discord: [https://discord.com/invite/Q94UsPvReQ](https://discord.gg/k7MTkwGy))
 
 - Catch up on our latest discussions and meetings. We add all the meeting minutes and meeting recordings on our Github discussions page. Here is a [link](https://github.com/orgs/autowarefoundation/discussions?discussions_q=label%3Ameeting%3Atruck-wg) to see our previous meetings.
 
 - **Join and participate in the Truck WG meetings** to learn about our developments, get started in understanding the codebase, hear from maintainers and industry experts, and begin making code contributions.
-  - Currently We meet every week on Friday. There are two meeting slots which you can join, (Slot 1 is more suited for people joining from East Asia) (Slot 2 is more suited for people joining from Europe/USA). You You can add the meeting invite to your calendar: https://calendar.google.com/calendar/embed?src=autoware.org_6lol0ho5ft0217h8c60pi1fm30%40group.calendar.google.com&ctz=Asia%2FTokyo
+  - Currently We meet every week on Friday. You can add the meeting invite to your calendar: https://calendar.google.com/calendar/embed?src=autoware.org_6lol0ho5ft0217h8c60pi1fm30%40group.calendar.google.com&ctz=Asia%2FTokyo
 
 ## Contact
 If you have any queries, you can contact Shengqi Zhang, Senior Staff Engineering at Inceptio Technology and Lead of the Truck Work Group within Autoware Foundation at the following email address:
