@@ -1,0 +1,4 @@
+float32 actual_torque_percent
+float32 driver_demand_torque_percent
+float32 nominal_friction_torque_percent
+float32 speed_rpm

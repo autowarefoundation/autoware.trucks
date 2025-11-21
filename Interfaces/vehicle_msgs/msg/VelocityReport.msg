@@ -1,0 +1,6 @@
+std_msgs/Header header
+float32 longitudinal_velocity_mps
+float32 lateral_velocity_mps
+float32 heading_rate_radps
+float32 lateral_acceleration_mpss
+

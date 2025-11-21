@@ -1,0 +1,5 @@
+builtin_interfaces/Time stamp
+float32 steering_tire_angle_rad
+float32 steering_wheel_angle_rad
+float32 driver_torque_nm
+float32 steering_motor_torque_nm
