@@ -12,11 +12,13 @@ builtin_interfaces/Time stamp
 builtin_interfaces/Time control_time
 
 # Desired engine torque in % of engine reference torque
-float32 engine_torque_cmd
+# float32 engine_torque_cmd
+float32 acceleration_mpss
+float32 velocity_mps
 
 # External brake request (XBR) in m/s² 
-float32 external_brake_request
+# float32 external_brake_request
 
 # XBR EBI mode
-uint8 ebi_mode 
+# uint8 ebi_mode 
 

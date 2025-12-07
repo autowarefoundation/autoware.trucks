@@ -1,0 +1,4 @@
+float32 acceleration_mpss
+float32 ebi_mode
+float32 hydraulic_retarder_percent
+float32 engine_brake_percent
