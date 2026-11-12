@@ -1,0 +1,63 @@
+# VisionPilot 0.9 — SodaSim configuration example
+#
+# Copy this file, fill in the paths for your system, and pass it to visionpilot:
+#   visionpilot /path/to/visionpilot_sodasim.conf
+#
+# Prerequisites:
+#   sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="SodaSim"
+#   sudo chmod 666 /dev/video10
+#   ros2 launch sodasim_gstreamer image_to_gstreamer.launch.py mode:=v4l2 device:=/dev/video10
+
+mode=camera
+source.camera.auto_select=false
+source.camera.device_id=/dev/video10
+
+# Models
+models.egolanes.path=/path/to/models/EgoLanes_FP32.onnx
+models.egolanes.provider=tensorrt
+models.egolanes.precision=fp32
+models.egolanes.device_id=0
+models.egolanes.cache_dir=/path/to/trt_cache
+models.egolanes.threshold=0.0
+
+# AutoSteer
+models.autosteer.path=/path/to/models/AutoSteer_FP32.onnx
+
+# AutoSpeed
+models.autospeed.path=/path/to/models/autospeed.onnx
+
+# Homography
+models.homography_yaml.path=/path/to/SodaSim/VisionPilot/homography_sodasim.yaml
+
+# Steering control
+steering_control.Kp=0.08
+steering_control.Ki=0.2
+steering_control.Kd=0.01
+steering_control.Ks=1.0
+
+# Output
+output.enable_viz=true
+output.save_video=false
+output.output_video_path=
+output.measure_latency=true
+output.csv_log_path=/path/to/metrics_sodasim.csv
+
+# Rerun (disabled)
+rerun.enabled=false
+rerun.spawn_viewer=false
+rerun.save_path=
+
+# CAN (disabled — SodaSim uses ROS2)
+can_interface.enabled=false
+can_interface.interface_name=can0
+
+# Pipeline
+pipeline.target_fps=10.0
+
+# Longitudinal
+longitudinal.autospeed.conf_thresh=0.5
+longitudinal.autospeed.iou_thresh=0.5
+longitudinal.ego_speed_default_ms=10.0
+longitudinal.pid.Kp=0.5
+longitudinal.pid.Ki=0.1
+longitudinal.pid.Kd=0.05

@@ -1,0 +1,10 @@
+# Homography: image pixel (u,v) → ground-plane world (X_fwd, Y_lat) in metres
+# Computed analytically from Charge67_Autoware_VisionPilot.json
+# Camera: 1280x1060, HFOV=50.0°, height=0.9000m, x_fwd=1.7000m, pitch=0.0°
+#
+# Usage (C++): cv::perspectiveTransform({{u,v}}, world, H)
+#              distance = sqrt(world.x^2 + world.y^2)
+#
+H: [0.00000000, 1.70000000, 334.23598621,
+     0.90000000, 0.00000000, -576.00000000,
+     0.00000000, 1.00000000, -530.00000000]

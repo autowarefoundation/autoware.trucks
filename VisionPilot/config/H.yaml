@@ -1,0 +1,12 @@
+%YAML:1.0
+---
+# Camera homography transform matrix
+# This example is for OpenLane 1920×1080 pixel space to BEV
+# MODIFY THIS MATRIX FOR DIFFERENT INPUT CAMERA!!!
+H: !!opencv-matrix
+  rows: 3
+  cols: 3
+  dt: d
+  data: [ 6.044144446030150e-04, -2.459315932924031e-03, -6.056269548874612e+00,
+          3.292803725663312e-03,  6.577304929754011e-05, -3.193473627885498e+00,
+          1.679596119965616e-05, -1.571346654544380e-03,  1.000000000000000e+00 ]
