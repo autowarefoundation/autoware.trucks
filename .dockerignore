@@ -1,0 +1,13 @@
+# Allowlist: the VisionPilot container build only needs these trees
+*
+!Models
+!VisionPilot/middleware_recipes
+!VisionPilot/software_defined_vehicle/OpenADKit/Docker
+
+# Never ship caches, model weights, or media in the build context
+**/__pycache__
+**/.git
+**/*.pth
+**/*.onnx
+**/*.mp4
+**/*.avi
