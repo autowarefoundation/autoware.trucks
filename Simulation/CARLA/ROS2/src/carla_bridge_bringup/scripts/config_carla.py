@@ -7,7 +7,9 @@ as ROS 2 topics by the `ego_telemetry` node inside the bridge container, so ROS 
 crosses the host/container boundary (host<->container DDS delivery proved unreliable).
 
 Sensors are enabled for CARLA's native --ros2 (camera published by the server itself).
-The spawn point comes from the rig JSON ("spawn_index"); SPAWN_INDEX env overrides.
+The map comes from the rig JSON ("map", default Town04). The spawn point comes from the rig JSON:
+"spawn_waypoint" (OpenDRIVE road_id/lane_id/s) if present, otherwise "spawn_index"
+(SPAWN_INDEX env overrides).
 """
 
 import argparse
@@ -35,6 +37,27 @@ def _check_versions(client):
         logging.info("CARLA client/server version %s", server_ver)
 
 
+def _waypoint_spawn_point(map_, spawn_waypoint):
+    """Resolve an OpenDRIVE (road_id, lane_id, s) location to a spawn transform."""
+    road_id = int(spawn_waypoint["road_id"])
+    lane_id = int(spawn_waypoint["lane_id"])
+    s = float(spawn_waypoint["s"])
+    waypoint = map_.get_waypoint_xodr(road_id, lane_id, s)
+    if waypoint is None:
+        raise RuntimeError(
+            "No waypoint for road_id={} lane_id={} s={} on map {}".format(
+                road_id, lane_id, s, map_.name
+            )
+        )
+    spawn_pt = waypoint.transform
+    # Raise the vehicle so it does not clip into the road when spawned.
+    spawn_pt.location.z += float(spawn_waypoint.get("z_offset", 1.0))
+    logging.info(
+        "map %s: spawning at road %d lane %d s %.1f -> %s", map_.name, road_id, lane_id, s, spawn_pt
+    )
+    return spawn_pt
+
+
 def _setup_vehicle(world, config):
     logging.debug("Spawning vehicle: {}".format(config.get("type")))
 
@@ -44,6 +67,10 @@ def _setup_vehicle(world, config):
     bp = bp_library.filter(config.get("type"))[0]
     bp.set_attribute("role_name", config.get("id"))
     bp.set_attribute("ros_name", config.get("id"))
+
+    spawn_waypoint = config.get("spawn_waypoint")
+    if spawn_waypoint is not None:
+        return world.spawn_actor(bp, _waypoint_spawn_point(map_, spawn_waypoint), attach_to=None)
 
     spawn_points = map_.get_spawn_points()
     for i in range(len(spawn_points)):
@@ -128,6 +155,7 @@ def _follow_vehicle(world, vehicle, spectator):
 
 import random
 
+
 def _setup_npc_traffic(world, traffic_manager, config, hero_spawn_index):
     bp_library = world.get_blueprint_library()
     map_ = world.get_map()
@@ -156,6 +184,9 @@ def _setup_npc_traffic(world, traffic_manager, config, hero_spawn_index):
             else:
                 # avoid the hero's spawn point and any already-used ones
                 free = [p for i, p in enumerate(spawn_points) if i != hero_spawn_index]
+                if not free:
+                    logging.warning("Map has no free spawn points for NPCs, skipping")
+                    continue
                 spawn_pt = random.choice(free)
 
             actor = world.try_spawn_actor(bp, spawn_pt)
@@ -184,10 +215,12 @@ def main(args):
         client.set_timeout(60.0)
         _check_versions(client)
 
-        # if args.map and "Town06" not in client.get_world().get_map().name:
-        #     logging.info("Loading Town06 map")
-        client.load_world("Town04")
-        # client.load_world("Town06")
+        with open(args.file) as f:
+            config = json.load(f)
+
+        map_name = config.get("map", "Town04")
+        logging.info("Loading map %s", map_name)
+        client.load_world(map_name)
 
         world = client.get_world()
 
@@ -205,14 +238,13 @@ def main(args):
         traffic_manager = client.get_trafficmanager()
         traffic_manager.set_synchronous_mode(True)
 
-        with open(args.file) as f:
-            config = json.load(f)
-
         vehicle = _setup_vehicle(world, config)
         sensors = _setup_sensors(world, vehicle, config.get("sensors", []))
 
         # Spawn additional vehicles
-        npc_vehicles = _setup_npc_traffic(world, traffic_manager, config, config.get("spawn_index", 0))
+        npc_vehicles = _setup_npc_traffic(
+            world, traffic_manager, config, config.get("spawn_index", 0)
+        )
 
         world.tick()  # initial tick to settle the world before autopilot/spectator setup
 
@@ -230,7 +262,7 @@ def main(args):
             loop_start = time.time()
 
             world.tick()  # advances sim by exactly fixed_delta_seconds; blocks until the
-                           # server has finished the step (including sensor captures)
+            # server has finished the step (including sensor captures)
             _follow_vehicle(world, vehicle, spectator)
 
             elapsed = time.time() - loop_start
@@ -291,7 +323,6 @@ if __name__ == "__main__":
         dest="autopilot",
         help="turn on autopilot for the vehicle",
     )
-    argparser.add_argument("-m", "--map", action="store_true", dest="map", help="load Town06 map")
 
     args = argparser.parse_args()
 

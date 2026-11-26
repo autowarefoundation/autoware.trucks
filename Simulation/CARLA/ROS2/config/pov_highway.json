@@ -1,0 +1,28 @@
+{
+  "map": "PoV_Highway",
+  "type": "vehicle.carlamotors.european_hgv",
+  "id": "hero",
+  "spawn_waypoint": { "road_id": 2, "lane_id": -2, "s": 500.0 },
+  "sensors": [
+    {
+      "type": "sensor.camera.rgb",
+      "id": "main_cam",
+      "spawn_point": { "x": 3.85, "y": 0.0, "z": 2.7, "roll": 0.0, "pitch": 0.0, "yaw": 0.0 },
+      "attributes": {
+        "image_size_x": 1080,
+        "image_size_y": 720,
+        "fov": 120,
+        "sensor_tick": 0.0
+      }
+    },
+    {
+      "type": "sensor.other.imu",
+      "id": "imu",
+      "spawn_point": { "x": 0.0, "y": 0.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0 },
+      "attributes": {
+        "sensor_tick": 0.1
+      }
+    }
+  ],
+  "npc_vehicles": []
+}
