@@ -45,15 +45,15 @@ install(TARGETS VisionPilot
 )
 
 set(VISIONPILOT_CONF_FILES
-        ${CMAKE_SOURCE_DIR}/config/H.yaml
+        ${CMAKE_BINARY_DIR}/config/H.yaml
         ${CMAKE_BINARY_DIR}/config/homography_C_matrix.yaml
-        ${CMAKE_SOURCE_DIR}/config/vision_pilot.conf
-        ${CMAKE_SOURCE_DIR}/config/vision_pilot_test.conf
+        ${CMAKE_BINARY_DIR}/config/vision_pilot.conf
+        ${CMAKE_BINARY_DIR}/config/vision_pilot_test.conf
 )
 
 if(ENABLE_ROS2_INTERFACE)
     list(APPEND VISIONPILOT_CONF_FILES
-            ${CMAKE_SOURCE_DIR}/config/vision_pilot_ros2.conf
+            ${CMAKE_BINARY_DIR}/config/vision_pilot_ros2.conf
     )
 endif()
 

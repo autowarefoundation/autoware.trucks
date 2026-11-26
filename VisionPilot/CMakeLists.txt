@@ -31,9 +31,27 @@ option(ENABLE_RERUN "Log directly to a Rerun .rrd via the Rerun C++ SDK" OFF)
 set(Python3_EXECUTABLE /usr/bin/python3 CACHE FILEPATH "" FORCE)
 find_package(Python3 REQUIRED)
 
+# Optional directory whose files replace the defaults in config/ (e.g. a simulator-specific
+# vision_pilot.conf, vision_pilot_ros2.conf and H.yaml). The default config/ is left untouched.
+set(VISIONPILOT_CONFIG_OVERLAY "" CACHE PATH "Directory with config files overriding config/")
+if(VISIONPILOT_CONFIG_OVERLAY)
+    get_filename_component(VISIONPILOT_CONFIG_OVERLAY "${VISIONPILOT_CONFIG_OVERLAY}" ABSOLUTE)
+    if(NOT IS_DIRECTORY "${VISIONPILOT_CONFIG_OVERLAY}")
+        message(FATAL_ERROR "VISIONPILOT_CONFIG_OVERLAY is not a directory: ${VISIONPILOT_CONFIG_OVERLAY}")
+    endif()
+    message(STATUS "VisionPilot config overlay: ${VISIONPILOT_CONFIG_OVERLAY}")
+endif()
+
+if(VISIONPILOT_CONFIG_OVERLAY AND EXISTS "${VISIONPILOT_CONFIG_OVERLAY}/H.yaml")
+    set(VISIONPILOT_GROUND_H "${VISIONPILOT_CONFIG_OVERLAY}/H.yaml")
+else()
+    set(VISIONPILOT_GROUND_H "${CMAKE_SOURCE_DIR}/config/H.yaml")
+endif()
+
 add_custom_target(generate_config ALL
         COMMAND Python3::Interpreter
         ${CMAKE_SOURCE_DIR}/scripts/find_homography_C_matrix.py
+        --ground-h ${VISIONPILOT_GROUND_H}
         --output ${CMAKE_BINARY_DIR}/config/homography_C_matrix.yaml
 )
 
@@ -72,6 +90,11 @@ endif()
 # config
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/config
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+if(VISIONPILOT_CONFIG_OVERLAY)
+    file(GLOB VISIONPILOT_OVERLAY_FILES "${VISIONPILOT_CONFIG_OVERLAY}/*")
+    file(COPY ${VISIONPILOT_OVERLAY_FILES}
+            DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/config)
+endif()
 
 # App
 add_subdirectory(app)
