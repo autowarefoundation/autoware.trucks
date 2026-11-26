@@ -2,7 +2,7 @@
 
 Vision Pilot supports integration with simulators including CARLA as well as others. You can use simulation to test the Vision Pilot system in a virtual environment.
 
-- CARLA Simulator (fully supported with ROS2) - Preferred
+- CARLA Simulator (fully supported with ROS2) - Preferred: see [CARLA/ROS2](CARLA/ROS2/README.md) for the setup and the PoV Highway truck demo
 - CARLA Simulator (experimental feature support with ZENOH)
 - SODA.Sim (coming soon)
 
