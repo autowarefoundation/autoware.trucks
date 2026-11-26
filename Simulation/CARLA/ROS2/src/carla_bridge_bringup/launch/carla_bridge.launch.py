@@ -53,7 +53,10 @@ def generate_launch_description():
         executable='carla_control_publisher_node',
         name='carla_control_publisher',
         output='screen',
-        parameters=[{'use_sim_time': True}]
+        parameters=[{'use_sim_time': True,
+                     'host': LaunchConfiguration('host'),
+                     'port': LaunchConfiguration('port'),
+        }]
     )
 
     def on_output(event):
