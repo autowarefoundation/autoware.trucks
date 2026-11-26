@@ -2,6 +2,9 @@ extends: default
 
 ignore: |
   *.param.yaml
+  # OpenCV FileStorage YAML (%YAML:1.0 header is not standard YAML)
+  VisionPilot/config/H*.yaml
+  Simulation/CARLA/ROS2/config/vision_pilot/H.yaml
 
 rules:
   braces:

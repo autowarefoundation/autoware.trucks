@@ -1,2 +1,5 @@
 *.param.yaml
 *.rviz
+# OpenCV FileStorage YAML (prettier breaks its indentation)
+VisionPilot/config/H*.yaml
+Simulation/CARLA/ROS2/config/vision_pilot/H.yaml

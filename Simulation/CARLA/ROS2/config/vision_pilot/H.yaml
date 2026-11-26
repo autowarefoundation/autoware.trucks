@@ -1,0 +1,13 @@
+%YAML:1.0
+---
+# Ground homography for the PoV Highway truck camera in config/pov_highway.json
+# (x=3.85 m, z=2.7 m from the vehicle origin, 1080x720, fov 120).
+# OpenCV FileStorage format: excluded from prettier in .prettierignore.
+H: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 5.6976672189142686e-19, -0.0061805555555555581,
+       0.83935935394489736, 0.0044444444444444453, 0.,
+       -2.4000000000000008, 4.9471743574153392e-19,
+       -0.0027777777777777788, 1. ]
